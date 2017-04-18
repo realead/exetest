@@ -45,5 +45,18 @@ class ExecutorTester(unittest.TestCase):
         self.assertEquals(mes, "Wrong stderr output! Expected: [nono] but received [2424\n]") 
         self.assertEquals(res, False)
 
+#test input
+
+    def test_emptyinput(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["echoprog.py"], ex.STDERR: "", ex.STDOUT: "", ex.EXIT_CODE: 42})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+
+    def test_input1(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["echoprog.py"], ex.STDERR: "inputinput\n", ex.STDOUT: "input\n", ex.EXIT_CODE: 0, ex.INPUT: "input"})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+
+
 
 

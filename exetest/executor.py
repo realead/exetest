@@ -1,6 +1,6 @@
 import subprocess
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR 
+from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT
 
         
 class CallResult:
@@ -10,9 +10,9 @@ class CallResult:
         self.exit_code=exit_code
 
 
-def execute_process(command): 
-    df = subprocess.Popen(command, stdout=subprocess.PIPE,  stderr=subprocess.PIPE)        
-    output, err = df.communicate()
+def execute_process(command, command_input): 
+    df = subprocess.Popen(command,  stdin=subprocess.PIPE, stdout=subprocess.PIPE,  stderr=subprocess.PIPE)        
+    output, err = df.communicate(input=command_input)
     code=df.returncode
     return CallResult(output, err, code)
 
@@ -22,6 +22,9 @@ def check_and_fix_params(params):
     """ inserting default values if none given"""
     if OPTIONS not in params:
         params[OPTIONS]=[]
+    
+    if INPUT not in params:
+        params[INPUT]=""
 
     
 
@@ -35,7 +38,7 @@ def execute(exe, params):
 
     #run test:
     check_and_fix_params(params)
-    received=execute_process([exe]+params[OPTIONS])
+    received=execute_process([exe]+params[OPTIONS], params[INPUT])
 
     #check results:
     if (EXIT_CODE in params) and (received.exit_code != params[EXIT_CODE]):
