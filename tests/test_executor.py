@@ -58,5 +58,8 @@ class ExecutorTester(unittest.TestCase):
         self.assertEquals(res, True)
 
 
-
+    def test_input2(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["echoprog.py"], ex.STDERR: "my_inputmy_input\n", ex.STDOUT: "my_input\n", ex.EXIT_CODE: 0, ex.INPUT: "my_input"})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
 
