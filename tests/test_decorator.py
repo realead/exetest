@@ -167,6 +167,26 @@ class OnlyDataBaseClassTester:
         self.assertTrue(hasattr(self, "test_input1"))
         self.assertTrue(hasattr(self, "test_input2"))    
 
+@dec.to_unit_tests
+class AdditionalTester(unittest.TestCase):
+    exe="python"
+    casedata_xxx1={ex.OPTIONS: ["echoprog.py"], 
+                     ex.STDERR: "inputinput\n", 
+                     ex.STDOUT: "input\n", 
+                     ex.EXIT_CODE: 0, 
+                     ex.INPUT: "input"}
 
+    casedata_xxx2={ex.OPTIONS: ["echoprog.py"], 
+                     ex.STDERR: "my_inputmy_input\n", 
+                     ex.STDOUT: "my_input\n", 
+                     ex.EXIT_CODE: 0, 
+                     ex.INPUT: "my_input"}
+
+    def test_self(self):
+        #methods were created:
+        self.assertTrue(hasattr(self, "test_xxx1"))
+        self.assertTrue(hasattr(self, "test_xxx2")) 
+        self.assertFalse(hasattr(self, "test_input1"))
+        self.assertFalse(hasattr(self, "test_input2")) 
 
    
