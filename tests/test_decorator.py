@@ -145,4 +145,28 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
         self.assertEquals(a.ret1(), 1)
         self.assertEquals(b.ret2(), 2)
 
+## using decorators:
+
+@dec.to_unit_tests
+class OnlyDataBaseClassTester:
+    exe="python"
+    casedata_input1={ex.OPTIONS: ["echoprog.py"], 
+                     ex.STDERR: "inputinput\n", 
+                     ex.STDOUT: "input\n", 
+                     ex.EXIT_CODE: 0, 
+                     ex.INPUT: "input"}
+
+    casedata_input2={ex.OPTIONS: ["echoprog.py"], 
+                     ex.STDERR: "my_inputmy_input\n", 
+                     ex.STDOUT: "my_input\n", 
+                     ex.EXIT_CODE: 0, 
+                     ex.INPUT: "my_input"}
+
+    def test_self(self):
+        #methods were created:
+        self.assertTrue(hasattr(self, "test_input1"))
+        self.assertTrue(hasattr(self, "test_input2"))    
+
+
+
    
