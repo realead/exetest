@@ -1,4 +1,5 @@
 import inspect
+import unittest
 
 import executor as ex
 
@@ -17,7 +18,7 @@ def find_unused_name(name, all_names):
 __DATA_PREFIX="casedata_"
 __TEST_PREFIX="test_"
 
-
+class C: pass
 
 def mangle_name(dataname):
     return __TEST_PREFIX+dataname[len(__DATA_PREFIX):]
@@ -28,8 +29,16 @@ def unit_test_prototype(x, exe, data):#x=>self
     x.assertTrue(res, msg="Wrong test with message: "+msg)
 
 def to_unit_tests(cls):
+    #add unittest.TestCase as parent class if needed:
+    if unittest.TestCase not in cls.__bases__:
+        class new_cls(unittest.TestCase, cls):
+            pass
+        cls = new_cls
+    #add test_XXX methods:
     for name, value in inspect.getmembers(cls):
         if name.startswith(__DATA_PREFIX):
              method_name=find_unused_name(mangle_name(name), dir(cls))
              setattr(cls, method_name, lambda self, exe=cls.exe, data=value: unit_test_prototype(self, exe, data))
     return cls
+
+

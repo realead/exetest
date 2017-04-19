@@ -88,4 +88,61 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
         self.assertTrue(a.test_input1() is None) #no throw
         self.assertTrue(a.test_input2() is None) #no throw
 
+    def test_base_class_preexisted(self):
+        @dec.to_unit_tests
+        class A(unittest.TestCase):
+            def runTest(self):#needed in __init__
+                pass
+
+        a=A();#no throw
+    
+        self.assertEquals(len(A.__bases__), 1)
+        self.assertTrue(unittest.TestCase in A.__bases__)
+
+
+    def test_base_no_class_preexisted(self):
+        @dec.to_unit_tests
+        class A:
+            def runTest(self): #needed in __init__
+                pass
+
+        a=A();#no throw
+    
+        self.assertEquals(len(A.__bases__), 2)
+        self.assertTrue(unittest.TestCase in A.__bases__)
+
+
+    def test_base_other_parent_preexisted(self):      
+        class B: pass
+        @dec.to_unit_tests
+        class A(B):
+            def runTest(self): #needed in __init__
+                pass
+
+        a=A()#no throw
+        self.assertEquals(len(A.__bases__), 2)
+        self.assertTrue(unittest.TestCase in A.__bases__)
+
+
+    def test_base_two_classes(self):      
+
+        @dec.to_unit_tests
+        class A:
+            def runTest(self): #needed in __init__
+                pass
+            def ret1(self):
+                return 1
+
+        @dec.to_unit_tests
+        class B:
+            def runTest(self): #needed in __init__
+                pass
+            def ret2(self):
+                return 2
+
+        a=A()#no throw
+        b=B()#no throw
+        self.assertEquals(a.ret1(), 1)
+        self.assertEquals(b.ret2(), 2)
+
    
