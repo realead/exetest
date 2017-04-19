@@ -18,7 +18,6 @@ def find_unused_name(name, all_names):
 __DATA_PREFIX="casedata_"
 __TEST_PREFIX="test_"
 
-class C: pass
 
 def mangle_name(dataname):
     return __TEST_PREFIX+dataname[len(__DATA_PREFIX):]
