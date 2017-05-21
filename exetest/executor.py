@@ -18,8 +18,12 @@ def execute_process(command, command_input):
 
 
 
-def check_and_fix_params(params):
+def check_and_fix_params(params, default_params):
     """ inserting default values if none given"""
+    for key,val in default_params.items():
+		if key not in params:
+			params[key]=val
+
     if OPTIONS not in params:
         params[OPTIONS]=[]
     
@@ -29,7 +33,7 @@ def check_and_fix_params(params):
     
 
 
-def execute(exe, params):
+def execute(exe, params, default_params={}):
     """ executes and compares results with expected values.
 
        if params[EXIT_CODE] not set, the exit code of the process will not be checked
@@ -37,7 +41,7 @@ def execute(exe, params):
     """
 
     #run test:
-    check_and_fix_params(params)
+    check_and_fix_params(params, default_params)
     received=execute_process([exe]+params[OPTIONS], params[INPUT])
 
     #check results:
