@@ -189,4 +189,24 @@ class AdditionalTester(unittest.TestCase):
         self.assertFalse(hasattr(self, "test_input1"))
         self.assertFalse(hasattr(self, "test_input2")) 
 
-   
+
+@dec.to_unit_tests
+class DefaultParametersClassTester:
+    exe="python"
+    default_parameters = {ex.OPTIONS: ["echoprog.py"], ex.EXIT_CODE: 0}
+
+    casedata_input1={ex.STDERR: "inputinput\n", 
+                     ex.STDOUT: "input\n",                    
+                     ex.INPUT: "input"}
+
+    casedata_input2={ex.STDERR: "my_inputmy_input\n", 
+                     ex.STDOUT: "my_input\n",  
+                     ex.INPUT: "my_input"}
+
+    def test_self(self):
+        #methods were created:
+        self.assertTrue(hasattr(self, "test_input1"))
+        self.assertTrue(hasattr(self, "test_input2"))   
+
+
+  

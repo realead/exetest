@@ -23,8 +23,8 @@ def mangle_name(dataname):
     return __TEST_PREFIX+dataname[len(__DATA_PREFIX):]
 
 
-def unit_test_prototype(x, exe, data):#x=>self
-    res, msg = ex.execute(exe, data)
+def unit_test_prototype(x, exe, data, defaults):#x=>self
+    res, msg = ex.execute(exe, data, defaults)
     x.assertTrue(res, msg="Wrong test with message: "+msg)
 
 def to_unit_tests(cls):
@@ -33,11 +33,19 @@ def to_unit_tests(cls):
         class new_cls(unittest.TestCase, cls):
             pass
         cls = new_cls
+
+    #extract default parameters:
+    defaults={}
+    try:
+        defaults=cls.default_parameters
+    except:
+        pass
+		
     #add test_XXX methods:
     for name, value in inspect.getmembers(cls):
         if name.startswith(__DATA_PREFIX):
              method_name=find_unused_name(mangle_name(name), dir(cls))
-             setattr(cls, method_name, lambda self, exe=cls.exe, data=value: unit_test_prototype(self, exe, data))
+             setattr(cls, method_name, lambda self, exe=cls.exe, data=value, defs=defaults: unit_test_prototype(self, exe, data, defs))
     return cls
 
 
