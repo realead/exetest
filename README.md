@@ -39,27 +39,34 @@ So let's create a first test case, which checks, that the returned code is `42` 
 
 Important details are:
 
-  1. `exe="python"` defines which executable should be called. There must be a "exe" definition.
-  2. `ex.OPTIONS: ["echoprog.py"]` defines the options with which the executable will be started.
-  3. `ex.EXIT_CODE: 42` defines the expected exit code. In this case this is 42.
-  4. `ex.INPUT: ""` defines the standard input fed to the executable.
-  5. the name of the test case data MUST start with `casedata_`.
+  1. the name of the test case data MUST start with `casedata_`.
+  2. `exe="python"` defines which executable should be called. There must be a "exe" definition.
+  3. `ex.OPTIONS: ["echoprog.py"]` defines the options with which the executable will be started.
+  4. `ex.EXIT_CODE: 42` defines the expected exit code. In this case this is 42.
+  5. `ex.INPUT: ""` defines the standard input fed to the executable.
+  
 
 In the next step we choose the test runner. Right now, the only implemented target is the `unittest`-framework: we save our test set up as `test_tutorial.py` and extend the class with the following decorator:
 
+    import exetest as ex
     import exetest.decorator as dec
 
     @dec.to_unit_tests
     class TutorialTester:
         ...
 
-You might have to augment the path for example with help of
+You might have to augment the pythonpath to the exetest-framework via enviroment variable
+
+    export PYTHONPATH="${PYTHONPATH}:<path_to_exetest>"
+
+
+or programmatically, for example with help of
 
     import sys
     sys.path.append(path_to_exetest)
 
 
-Now run the tests with 
+Now, run the tests with 
     
     python -m unittest test_tutorial
 
