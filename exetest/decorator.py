@@ -32,7 +32,10 @@ def to_unit_tests(cls):
     if unittest.TestCase not in cls.__bases__:
         class new_cls(unittest.TestCase, cls):
             pass
+        new_cls.__name__ = cls.__name__
+        new_cls.__module__ = cls.__module__
         cls = new_cls
+
 
     #extract default parameters:
     defaults={}
