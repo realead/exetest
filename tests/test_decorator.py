@@ -206,7 +206,25 @@ class DefaultParametersClassTester:
     def test_self(self):
         #methods were created:
         self.assertTrue(hasattr(self, "test_input1"))
-        self.assertTrue(hasattr(self, "test_input2"))   
+        self.assertTrue(hasattr(self, "test_input2"))  
+
+
+#setUp, TearDown, test_* should be kept by the decorator
+@dec.to_unit_tests
+class KeepOldFunctionalityTester:
+    def setUp(self):
+        return 10;
+
+    def tearDown(self):
+        return 11;
+
+    def test_SetUpExists(self):
+        self.assertTrue(hasattr(self, "setUp"))
+        self.assertEquals(self.setUp(), 10)
+
+    def test_SetUpExists(self):
+        self.assertTrue(hasattr(self, "tearDown")) 
+        self.assertEquals(self.tearDown(), 11)
 
 
   
