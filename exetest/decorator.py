@@ -30,9 +30,12 @@ def unit_test_prototype(x, exe, data, defaults):#x=>self
 def to_unit_tests(cls):
     #add unittest.TestCase as parent class if needed:
     if unittest.TestCase not in cls.__bases__:
-        class new_cls(unittest.TestCase, cls):
+        class new_cls(cls, unittest.TestCase):
             pass
+        new_cls.__name__ = cls.__name__
+        new_cls.__module__ = cls.__module__
         cls = new_cls
+
 
     #extract default parameters:
     defaults={}
@@ -40,7 +43,7 @@ def to_unit_tests(cls):
         defaults=cls.default_parameters
     except:
         pass
-		
+	
     #add test_XXX methods:
     for name, value in inspect.getmembers(cls):
         if name.startswith(__DATA_PREFIX):
