@@ -5,6 +5,39 @@ a python framework for testing command line interfaces
 ## Prerequisites
 
   1. Python 2.7
+
+## Installation
+
+This is a python2.7 module, to run it/test it you need a python2.7 environment, the easiest way is to use the `virtualenv`:
+
+    virtualenv -p python2.7 p27
+    source p27/bin/activate
+    (p27)...
+
+To install the module using `pip` run:
+
+    (p27) pip install https://github.com/realead/exetest/zipball/master
+
+It is possible to uninstall it afterwards via
+   
+    (p27) pip uninstall exetest
+
+You can also install using the `setup.py` file from the root directory of the project:
+
+    (p27)  python setup.py install
+
+However, there is no easy way to deinstall it afterwards (only manually) if `setup.py` was used directly.
+
+You could also use the module without installation, by augmenting the python-path via enviroment variable
+
+    export PYTHONPATH="${PYTHONPATH}:<path_to_exetest>"
+
+or programmatically, for example with help of
+
+    import sys
+    sys.path.append(path_to_exetest)
+
+
   
 ## Tutorial
 
@@ -54,16 +87,6 @@ In the next step we choose the test runner. Right now, the only implemented targ
     @dec.to_unit_tests
     class TutorialTester:
         ...
-
-You might have to augment the pythonpath to the exetest-framework via enviroment variable
-
-    export PYTHONPATH="${PYTHONPATH}:<path_to_exetest>"
-
-
-or programmatically, for example with help of
-
-    import sys
-    sys.path.append(path_to_exetest)
 
 
 Now, run the tests with 
@@ -136,6 +159,7 @@ Now there are 3 successful tests!
    1. maximal execution time for a test case
    2. an interface for test runner, so this framework can be used without unittest
    3. other test frameworks as possible targets
+   4. python3
 
 
                               
