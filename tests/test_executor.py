@@ -1,8 +1,5 @@
 import unittest
 
-import sys
-sys.path.append('..')#exetest
-
 from exetest.executor import execute
 import exetest as ex
 

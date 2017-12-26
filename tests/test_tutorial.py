@@ -1,5 +1,4 @@
-import sys
-sys.path.append('..')#exetest
+
 
 import exetest.decorator as dec
 import exetest as ex
