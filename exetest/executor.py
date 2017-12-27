@@ -1,6 +1,7 @@
 import subprocess
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT
+from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS
+from checkers import DefaultChecker
 
         
 class CallResult:
@@ -30,6 +31,9 @@ def check_and_fix_params(params, default_params):
     if INPUT not in params:
         params[INPUT]=""
 
+    if CHECKERS  not in params:
+        params[CHECKERS]=[DefaultChecker()]
+
     
 
 
@@ -45,15 +49,11 @@ def execute(exe, params, default_params={}):
     received=execute_process([exe]+params[OPTIONS], params[INPUT])
 
     #check results:
-    if (EXIT_CODE in params) and (received.exit_code != params[EXIT_CODE]):
-        return (False, "Wrong return code! Expected: {0} but received {1}".format(params[EXIT_CODE], received.exit_code))
-
-    if (STDOUT in params) and (received.stdout != params[STDOUT]):
-        return (False, "Wrong stdout output! Expected: [{0}] but received [{1}]".format(params[STDOUT], received.stdout))
-
-    if (STDERR in params) and (received.stderr != params[STDERR]):
-        return (False, "Wrong stderr output! Expected: [{0}] but received [{1}]".format(params[STDERR], received.stderr))
-
+    for checker in params[CHECKERS]:
+        res, msg = checker(params, received)
+        if not res:
+             return (res, msg)
+    
     return (True, "") 
 
 
