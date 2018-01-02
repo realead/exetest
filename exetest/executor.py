@@ -1,4 +1,5 @@
 import subprocess
+import itertools
 
 from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS
 from checkers import DefaultChecker
@@ -52,7 +53,7 @@ def execute(exe, params, default_params={}):
     received=execute_process([exe]+params[OPTIONS], params[INPUT])
 
     #check results:
-    for checker in params[CHECKERS]:
+    for checker in itertools.chain(params[CHECKERS], params[ADDITIONAL_CHECKERS]):
         res, msg = checker(params, received)
         if not res:
              return (res, msg)
