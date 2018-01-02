@@ -1,6 +1,6 @@
 import subprocess
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS
+from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS
 from checkers import DefaultChecker
 
         
@@ -33,6 +33,9 @@ def check_and_fix_params(params, default_params):
 
     if CHECKERS  not in params:
         params[CHECKERS]=[DefaultChecker()]
+
+    if ADDITIONAL_CHECKERS not in params:
+        params[ADDITIONAL_CHECKERS]=[]
 
     
 

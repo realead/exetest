@@ -6,4 +6,5 @@ STDOUT = "stdout"
 STDERR = "stderr"
 INPUT = "input"
 CHECKERS = "checkers"
+ADDITIONAL_CHECKERS = "additional"
 
