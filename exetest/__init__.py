@@ -1,4 +1,5 @@
 
+__version__=(0,2,0)
 
 from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS 
 
