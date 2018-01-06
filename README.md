@@ -37,7 +37,9 @@ or programmatically, for example with help of
     import sys
     sys.path.append(path_to_exetest)
 
+#### Tests
 
+Run `sh run_unit_tests.sh` with the virtual environment activated to run all unit tests.
   
 ## Tutorial
 
@@ -153,7 +155,7 @@ The default parameters can be easily overwritten in a test case definition:
 
 Now there are 3 successful tests!
 
-### Custom Checker
+#### Custom Checkers
 
 It is possible to add custom checkers, there are multiple reasons why they are needed:
 
