@@ -42,7 +42,14 @@ class DoubleChecker(DefaultChecker):
 
 
     def check_output(self, expected, received):
-        e,r=float(expected),float(received)
+        try:
+           r=float(received)
+        except:
+           raise CheckerError("Received value ["+received+"] isn't a float value")
+        try:
+           e=float(expected)
+        except:
+           raise CheckerError("Expected value ["+expected+"] isn't a float value")
         diff=abs(e-r)
         if diff<=self.abs_tolerance:
             return

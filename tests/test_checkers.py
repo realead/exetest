@@ -84,3 +84,52 @@ class CheckerTester(unittest.TestCase):
 
 
 
+
+ 
+ 
+class DoubleCheckerTester(unittest.TestCase):  
+     def test_output_not_double(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "a", ex.EXIT_CODE: 0, ex.STDOUT: "1.0", ex.CHECKERS: [DoubleChecker(abs_tolerance=0.9)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, False)
+        self.assertEquals(mes, "Received value [a\n] isn't a float value") 
+
+     def test_expected_output_not_double(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "1.0", ex.EXIT_CODE: 0, ex.STDOUT: "1a.0", ex.CHECKERS: [DoubleChecker(abs_tolerance=0.9)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, False)
+        self.assertEquals(mes, "Expected value [1a.0] isn't a float value") 
+
+     def test_expected_int(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "1.0", ex.EXIT_CODE: 0, ex.STDOUT: 1, ex.CHECKERS: [DoubleChecker(abs_tolerance=0.9)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, True)
+        self.assertEquals(mes, "") 
+
+     def test_abs_tolerance_ok(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "1.0", ex.EXIT_CODE: 0, ex.STDOUT: .91, ex.CHECKERS: [DoubleChecker(abs_tolerance=0.1)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, True)
+        self.assertEquals(mes, "") 
+
+     def test_abs_tolerance_not_ok(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "10.0", ex.EXIT_CODE: 0, ex.STDOUT: 9.1, ex.CHECKERS: [DoubleChecker(abs_tolerance=0.1)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, False)
+
+     def test_rel_tolerance_ok1(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "1.0", ex.EXIT_CODE: 0, ex.STDOUT: .91, ex.CHECKERS: [DoubleChecker(rel_tolerance=0.1)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, True)
+
+     def test_rel_tolerance_ok2(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "10.0", ex.EXIT_CODE: 0, ex.STDOUT: 9.1, ex.CHECKERS: [DoubleChecker(rel_tolerance=0.1)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, True)
+
+     def test_rel_tolerance_not_ok(self):
+        params={ex.OPTIONS: ["echoprog.py"], ex.INPUT: "0.1", ex.EXIT_CODE: 0, ex.STDOUT: .081, ex.CHECKERS: [DoubleChecker(rel_tolerance=0.1)]}
+        res, mes =  execute("python",params)
+        self.assertEquals(res, False)
+
+
