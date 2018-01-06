@@ -153,6 +153,79 @@ The default parameters can be easily overwritten in a test case definition:
 
 Now there are 3 successful tests!
 
+### Custom Checker
+
+It is possible to add custom checkers, there are multiple reasons why they are needed:
+
+   1. Theresults must be compared with some tolerance (e.g. doubles)
+   2. More than one result is correct
+   3. Part of the results is written on the disc
+
+It is possible do do without custom checkers and use some wrapper for the program to be tested, but custom checkers may be a more convient approach.
+
+We can replace the default checker by overwriting `ex.CHECKERS` which is a list of checkers, for example:
+    
+    ....
+    from exetest.checkers import DoubleChecker
+
+ 
+    @dec.to_unit_tests
+    class TutorialTester:
+    ...
+       casedata_double_checker={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: ".9", 
+                              ex.CHECKERS: [DoubleChecker(rel_tolerance=.1, abs_tolerance=.1)]}
+
+Here we use the predefined `DoubleChecker` - the DefaultChecker would fail because the outputs are different, but the `DoubleChecker` accepts this difference.
+
+The checkers must be a callable with signature `xxx(expected, received)` (consult `executor.py` for more details).
+
+If we would like to have a checker in addition to the `DefaultChecker`, we could use `ex.ADDITIONAL_CHECKERS`-option:
+
+ 
+    class VersionChecker():
+        def __init__(self, minversion):
+            self.minversion=minversion
+
+        def __call__(self, expected, received):
+            if ex.__version__>=self.minversion:
+               return True,""
+            return False,"exetest too old" 
+
+    @dec.to_unit_tests
+    class TutorialTester:
+    ...
+       casedata_add_checker={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.ADDITIONAL_CHECKERS: [VersionChecker((0,2,0))]}
+
+Here, the test of the version will be done in addition to the usual `DefaultChecker` and is equivalent to
+
+    from exetest.checkers import DefaultChecker
+    ...
+      casedata_overwrite_checker={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.CHECKERS: [DefaultChecker(), VersionChecker((0,2,0))]}
+
+Please take into account, that `DefaultChecker` will be the first checker executed.
+
+It is also possible to use for example a `lambda` as checker, if it suites you:
+
+    casedata_add_lambda={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.ADDITIONAL_CHECKERS: [lambda expected, received: (True,"") if ex.__version__>=(0,2,0) else (False,"exetest is too old")]}
+
+
+
+## History:
+
+   **0.1.0**: First release
+
+   **0.2.0**: Custom Checker added
 
 ## Future:
  
