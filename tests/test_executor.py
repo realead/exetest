@@ -71,3 +71,66 @@ class ExecutorTester(unittest.TestCase):
         self.assertEquals(mes, "") 
         self.assertEquals(res, True)
 
+
+class PreparerCallRecorder:
+    def __init__(self):
+        self.cnt=0
+    def __call__(self, params):
+        self.cnt+=1
+        self.params=dict(params) 
+ 
+
+class PreparerTester(unittest.TestCase):  
+    def test_call_ones(self):
+        rec = PreparerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [rec]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+        self.assertEquals(rec.cnt, 1)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+
+    def test_call_twice(self):
+        rec = PreparerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [rec, rec]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+        self.assertEquals(rec.cnt, 2)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+
+
+
+
+
+class CleanerCallRecorder:
+    def __init__(self):
+        self.cnt=0
+    def __call__(self, params, received):
+        self.cnt+=1
+        self.params=dict(params) 
+        self.received=received
+
+
+class CleanerTester(unittest.TestCase):  
+    def test_call_ones(self):
+        rec = CleanerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [rec]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+        self.assertEquals(rec.cnt, 1)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+        self.assertEquals(rec.received.exit_code, 0)
+
+    def test_call_twice(self):
+        rec = CleanerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [rec, rec]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+        self.assertEquals(rec.cnt, 2)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+        self.assertEquals(rec.received.exit_code, 0)
+
+
+
+ 
+
+

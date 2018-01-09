@@ -1,7 +1,7 @@
 import subprocess
 import itertools
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS
+from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS, PREPARERS, CLEANERS
 from checkers import DefaultChecker
 
         
@@ -37,6 +37,7 @@ def check_and_fix_params(params, default_params):
 
     if ADDITIONAL_CHECKERS not in params:
         params[ADDITIONAL_CHECKERS]=[]
+    
 
     
 
@@ -47,6 +48,9 @@ def execute(exe, params, default_params={}):
        if params[EXIT_CODE] not set, the exit code of the process will not be checked
        the same goes for STDOUT and STDERR parameters
     """
+    #prepare test:
+    for prep in params.get(PREPARERS, []):
+        prep(params)
 
     #run test:
     check_and_fix_params(params, default_params)
@@ -57,6 +61,10 @@ def execute(exe, params, default_params={}):
         res, msg = checker(params, received)
         if not res:
              return (res, msg)
+
+    #clean-up test:
+    for cleaner in params.get(CLEANERS, []):
+        cleaner(params, received)
     
     return (True, "") 
 
