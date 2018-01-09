@@ -40,6 +40,24 @@ def check_and_fix_params(params, default_params):
     
 
     
+def execute_worker(exe, params, default_params):
+        #prepare test:
+        for prep in params.get(PREPARERS, []):
+            msg=prep(params)
+            if msg:
+               return False, msg, None
+
+        #run test:
+        check_and_fix_params(params, default_params)
+        received=execute_process([exe]+params[OPTIONS], params[INPUT])
+
+        #check results:
+        for checker in itertools.chain(params[CHECKERS], params[ADDITIONAL_CHECKERS]):
+            res, msg = checker(params, received)
+            if not res:
+                 return res, msg, received
+
+        return True, "", received
 
 
 def execute(exe, params, default_params={}):
@@ -48,29 +66,22 @@ def execute(exe, params, default_params={}):
        if params[EXIT_CODE] not set, the exit code of the process will not be checked
        the same goes for STDOUT and STDERR parameters
     """
-    #prepare test:
-    for prep in params.get(PREPARERS, []):
-        msg=prep(params)
-        if msg:
-           return False, msg
-
-    #run test:
-    check_and_fix_params(params, default_params)
-    received=execute_process([exe]+params[OPTIONS], params[INPUT])
-
-    #check results:
-    for checker in itertools.chain(params[CHECKERS], params[ADDITIONAL_CHECKERS]):
-        res, msg = checker(params, received)
-        if not res:
-             return (res, msg)
-
-    #clean-up test:
-    for cleaner in params.get(CLEANERS, []):
-        msg=cleaner(params, received)
-        if msg:
-            return (False,msg)
     
-    return (True, "") 
+    try:
+       res,msg,received = execute_worker(exe, params, default_params)
+    except Exception as error:
+        #clean up because of error
+        for cleaner in params.get(CLEANERS, []):
+            msg=cleaner(params, None)
+        raise # just let the others handle it...
+        
+    #clean-up test (normal mode)
+    for cleaner in params.get(CLEANERS, []):
+        tmp_msg=cleaner(params, received)
+        if tmp_msg:
+            return False, tmp_msg
+    
+    return res, msg
 
 
 

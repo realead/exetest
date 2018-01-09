@@ -157,6 +157,33 @@ class CleanerTester(unittest.TestCase):
         res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [lambda a,b : None]})
         self.assertEquals(mes, "") 
         self.assertEquals(res, True)
- 
+
+    def test_run_cleaner_error_in_preparer(self):
+        rec = CleanerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [lambda a : "Error"], ex.CLEANERS: [rec, rec]})
+        self.assertEquals(mes, "Error") 
+        self.assertEquals(res, False)
+        self.assertEquals(rec.cnt, 2)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+        self.assertEquals(rec.received, None)
+
+    def test_run_cleaner_wrong_answer(self):
+        rec = CleanerCallRecorder()
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 42, ex.CLEANERS: [rec, rec]})
+        self.assertEquals(mes, "Wrong return code! Expected: 42 but received 0") 
+        self.assertEquals(res, False)
+        self.assertEquals(rec.cnt, 2)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 42)
+        self.assertEquals(rec.received.exit_code, 0)
+
+    def test_run_cleaner_after_exception(self):
+        rec = CleanerCallRecorder()
+        with self.assertRaises(Exception) as content:
+              execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0,  ex.PREPARERS: [lambda a : 1/0], ex.CLEANERS: [rec, rec]})
+        self.assertEquals(rec.cnt, 2)
+        self.assertEquals(rec.params[ex.EXIT_CODE], 0)
+        self.assertEquals(rec.received, None)
+
+
 
 
