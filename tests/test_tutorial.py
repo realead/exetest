@@ -63,5 +63,5 @@ class TutorialTester:
     casedata_cleaners={ ex.EXIT_CODE: 0, 
                               ex.INPUT: "1.0", 
                               ex.STDOUT: "1.0\n", 
-                              ex.CLEANERS: [lambda pars : None , lambda pars : ""]}
+                              ex.CLEANERS: [lambda pars, rec : None , lambda pars, rec : ""]}
   
