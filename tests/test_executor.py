@@ -78,6 +78,7 @@ class PreparerCallRecorder:
     def __call__(self, params):
         self.cnt+=1
         self.params=dict(params) 
+
  
 
 class PreparerTester(unittest.TestCase):  
@@ -97,7 +98,20 @@ class PreparerTester(unittest.TestCase):
         self.assertEquals(rec.cnt, 2)
         self.assertEquals(rec.params[ex.EXIT_CODE], 0)
 
+    def test_error_in_preparer(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [lambda a : "Error"]})
+        self.assertEquals(mes, "Error") 
+        self.assertEquals(res, False)
 
+    def test_return_empty_in_preparer(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [lambda a : ""]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
+
+    def test_return_empty_in_preparer(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.PREPARERS: [lambda a : None]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
 
 
 

@@ -50,7 +50,9 @@ def execute(exe, params, default_params={}):
     """
     #prepare test:
     for prep in params.get(PREPARERS, []):
-        prep(params)
+        msg=prep(params)
+        if msg:
+           return False, msg
 
     #run test:
     check_and_fix_params(params, default_params)
