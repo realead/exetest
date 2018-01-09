@@ -143,8 +143,20 @@ class CleanerTester(unittest.TestCase):
         self.assertEquals(rec.params[ex.EXIT_CODE], 0)
         self.assertEquals(rec.received.exit_code, 0)
 
+    def test_error_in_cleaner(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [lambda a,b : "Error"]})
+        self.assertEquals(mes, "Error") 
+        self.assertEquals(res, False)
 
+    def test_return_empty_in_cleaner(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [lambda a,b : ""]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
 
+    def test_return_empty_in_cleaner(self):
+        res, mes =  execute("python", {ex.OPTIONS: ["mockprog.py", "24"], ex.EXIT_CODE: 0, ex.CLEANERS: [lambda a,b : None]})
+        self.assertEquals(mes, "") 
+        self.assertEquals(res, True)
  
 
 

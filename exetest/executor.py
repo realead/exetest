@@ -66,7 +66,9 @@ def execute(exe, params, default_params={}):
 
     #clean-up test:
     for cleaner in params.get(CLEANERS, []):
-        cleaner(params, received)
+        msg=cleaner(params, received)
+        if msg:
+            return (False,msg)
     
     return (True, "") 
 
