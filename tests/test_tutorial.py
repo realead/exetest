@@ -52,4 +52,16 @@ class TutorialTester:
                               ex.INPUT: "1.0", 
                               ex.STDOUT: "1.0\n", 
                               ex.CHECKERS: [DefaultChecker(), VersionChecker((0,2,0))]}
+
+
+    casedata_preparers={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.PREPARERS: [lambda pars : None , lambda pars : ""]}
+
+
+    casedata_cleaners={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.CLEANERS: [lambda pars : None , lambda pars : ""]}
   

@@ -222,12 +222,31 @@ It is also possible to use for example a `lambda` as checker, if it suites you:
                               ex.ADDITIONAL_CHECKERS: [lambda expected, received: (True,"") if ex.__version__>=(0,2,0) else (False,"exetest is too old")]}
 
 
+#### Preparers and Cleaners
+
+There are also hooks to run code prior to the start of the executable and to run code after everything is done for cleaning up. They can be used for example for evaluating files written to the disc.
+
+For this the parameter-keys `ex.PREPARERS` and `ex.CLEANERS` can be used.
+
+The preparers are callable with signature `xxx(parameters)` so they know the starting parameters. If everything worked as expected preparers should return `None` or an empty string or an error-message otherwise. One or more preparers can be defined, for example:
+
+    casedata_preparers={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.PREPARERS: [lambda pars : None , lambda pars : ""]}
+
+Similar for cleaners - the only difference is that they must have the signature `xxx(parameters, received)` so they know the starting parameters and the returned values:
+
+    casedata_cleaners={ ex.EXIT_CODE: 0, 
+                              ex.INPUT: "1.0", 
+                              ex.STDOUT: "1.0\n", 
+                              ex.CLEANERS: [lambda pars : None , lambda pars : ""]}
 
 ## History:
 
    **0.1.0**: First release
 
-   **0.2.0**: Custom Checker added
+   **0.2.0**: Custom Checker added // Preparers and Cleaners added
 
 ## Future:
  
