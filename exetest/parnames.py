@@ -9,4 +9,7 @@ CHECKERS = "checkers"
 ADDITIONAL_CHECKERS = "additional"
 PREPARERS = "preparers"
 CLEANERS = "cleaners"
+INPUT_FILE = "input_file"
+STDOUT_FILE = "stdout_file"
+STDERR_FILE = "stderr_file"
 

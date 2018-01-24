@@ -1,9 +1,13 @@
 import subprocess
 import itertools
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS, PREPARERS, CLEANERS
+from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS, PREPARERS, CLEANERS, INPUT_FILE, STDOUT_FILE, STDERR_FILE
 from checkers import DefaultChecker
 
+
+def slurp_file(file_name):
+    with open(file_name, 'r') as content_file:
+        return content_file.read()
         
 class CallResult:
     def __init__(self, out, err, exit_code):
@@ -30,7 +34,16 @@ def check_and_fix_params(params, default_params):
         params[OPTIONS]=[]
     
     if INPUT not in params:
-        params[INPUT]=""
+        if INPUT_FILE in params:
+            params[INPUT]=slurp_file(params[INPUT_FILE])
+        else:
+            params[INPUT]=""
+
+    if STDOUT not in params and STDOUT_FILE in params:
+        params[STDOUT]=slurp_file(params[STDOUT_FILE])
+
+    if STDERR not in params and STDERR_FILE in params:
+        params[STDERR]=slurp_file(params[STDERR_FILE])
 
     if CHECKERS  not in params:
         params[CHECKERS]=[DefaultChecker()]
