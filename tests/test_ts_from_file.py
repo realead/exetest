@@ -19,11 +19,11 @@ class FromFileTester:
                          ex.STDOUT: "my_input\n\n"}
 
 
-    #if input is given, input_file_name isn't taken into consideration
+    #input_file trumps input
     casedata_overwritten_input_file={ex.INPUT_FILE: INPUT_FILE_NAME,
-                         ex.INPUT: "my_input", 
-                         ex.STDERR: "my_inputmy_input\n",
-                         ex.STDOUT: "my_input\n"}
+                         ex.INPUT: "A", 
+                         ex.STDERR: "my_input\nmy_input\n\n",
+                         ex.STDOUT: "my_input\n\n"}
 
 
     casedata_inout_files={ex.INPUT_FILE: INPUT_FILE_NAME, 
@@ -31,8 +31,8 @@ class FromFileTester:
                           ex.STDOUT_FILE: OUTPUT_FILE_NAME}
 
 
-    #if stdout is given, output_file_name isn't taken into consideration
-    casedata_overwritten_out_file={ex.INPUT: "A", 
+    #ouput_file trumps stdout
+    casedata_overwritten_out_file={ex.INPUT_FILE: INPUT_FILE_NAME, 
                           ex.STDOUT: "A\n",
                           ex.STDOUT_FILE: OUTPUT_FILE_NAME}
 
@@ -41,8 +41,8 @@ class FromFileTester:
                           ex.STDOUT_FILE: OUTPUT_FILE_NAME}
 
 
-    #if stdout is given, output_file_name isn't taken into consideration
-    casedata_overwritten_err_file={ex.INPUT: "A", 
+    #stderr_file trumps stderr
+    casedata_overwritten_err_file={ex.INPUT_FILE: INPUT_FILE_NAME, 
                           ex.STDERR: "AA\n",
                           ex.STDERR_FILE: ERROR_FILE_NAME}
 

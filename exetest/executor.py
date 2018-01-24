@@ -33,16 +33,15 @@ def check_and_fix_params(params, default_params):
     if OPTIONS not in params:
         params[OPTIONS]=[]
     
+    if INPUT_FILE in params:
+        params[INPUT]=slurp_file(params[INPUT_FILE])
     if INPUT not in params:
-        if INPUT_FILE in params:
-            params[INPUT]=slurp_file(params[INPUT_FILE])
-        else:
-            params[INPUT]=""
+        params[INPUT]=""
 
-    if STDOUT not in params and STDOUT_FILE in params:
+    if STDOUT_FILE in params:
         params[STDOUT]=slurp_file(params[STDOUT_FILE])
 
-    if STDERR not in params and STDERR_FILE in params:
+    if STDERR_FILE in params:
         params[STDERR]=slurp_file(params[STDERR_FILE])
 
     if CHECKERS  not in params:
