@@ -265,13 +265,71 @@ specifying `ex.XXX_FILE` overwrites the corresponding `ex.XXX`-parameter if it i
         casedata_all_from_files={ex.INPUT_FILE:  "input.txt",    #<==    counts
                                  ex.INPUT: "AAA"}                #doesn't count
 
+#### Discovering test cases from a folder
+
+It is also possible to create test cases automatically from the existing test-case sets in a folder. Let's assume the following structure of the `test_data`-folder:
+
+    test_data
+         |----- A.in
+         |----- A.out
+         |----- A.err
+         |----- B.in
+         |----- B.out
+         |----- C.in
+
+To create test cases A and B we can do the following:
+
+    import exetest as ex
+    import exetest.decorator as dec
+    import exetest.ts_discovery as ds
+       
+    @dec.to_unit_tests
+    @ds.datasets_from_path("test_data")
+    class TestFromPathTester:
+        exe="python"
+        default_parameters = {ex.OPTIONS: ["echoprog.py"],
+                              ex.EXIT_CODE: 0}
+
+
+The usage of the decorator 
+
+    def datasets_from_path(path, endings=dict(DEFAULT_ENDINGS), needed_files=set(DEFAULT_NEEDED_FILES)):
+
+translates it roughly to the following code:
+
+    @dec.to_unit_tests
+    @ds.datasets_from_path("test_data")
+    class TestFromPathTester:
+        exe="python"
+        default_parameters = {ex.OPTIONS: ["echoprog.py"],
+                              ex.EXIT_CODE: 0}
+
+        casedata_A={ex.INPUT_FILE:  "testdata/A.in", 
+                    ex.STDERR_FILE: "testdata/A.out",
+                    ex.STDOUT_FILE: "testdata/A.err"}
+
+        casedata_B={ex.INPUT_FILE:  "testdata/B.in", 
+                    ex.STDERR_FILE: "testdata/B.out"}
+
+The role of the files is fixed through the ending of the file and can be customized via `endings`-argument of the decorator, which has the following default:
+
+    DEFAULT_ENDINGS ={ex.INPUT_FILE :  ".in", 
+                      ex.STDOUT_FILE : ".out", 
+                      ex.STDERR_FILE : ".err"}
+
+
+As default, a test case is registered if both input and output file with the same name are present. This behavior can be customized via `needed_files`-argument of the decorator. The default is:
+
+    DEFAULT_NEEDED_FILES = set([ex.INPUT_FILE, ex.STDOUT_FILE]) 
+
+
 ## History:
 
    **0.1.0**: First release
 
    **0.2.0**: Custom Checker added // Preparers and Cleaners added
 
-   **0.3.0**: Input/Ouput/Error from files 
+   **0.3.0**: Input/Ouput/Error from files // Discovering test cases from a folder
 
 ## Future:
  
