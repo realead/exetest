@@ -242,11 +242,36 @@ Similar for cleaners - the only difference is that they must have the signature 
                               ex.STDOUT: "1.0\n", 
                               ex.CLEANERS: [lambda pars, rec : None , lambda pars, rec : ""]}
 
+#### Input/Output/Errors from files
+
+It is also possible to use text-files as input, output and error:
+
+    import exetest.decorator as dec
+    import exetest as ex
+
+    @dec.to_unit_tests
+    class FromFileTester:
+        exe="python"
+        default_parameters = {ex.OPTIONS: ["echoprog.py"],
+                              ex.EXIT_CODE: 0}
+
+        casedata_all_from_files={ex.INPUT_FILE:  "input.txt", 
+                                 ex.STDERR_FILE: "error.txt",
+                                 ex.STDOUT_FILE: "output.txt"}
+
+
+specifying `ex.XXX_FILE` overwrites the corresponding `ex.XXX`-parameter if it is set, i.e.
+
+        casedata_all_from_files={ex.INPUT_FILE:  "input.txt",    #<==    counts
+                                 ex.INPUT: "AAA"}                #doesn't count
+
 ## History:
 
    **0.1.0**: First release
 
    **0.2.0**: Custom Checker added // Preparers and Cleaners added
+
+   **0.3.0**: Input/Ouput/Error from files 
 
 ## Future:
  
