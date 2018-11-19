@@ -4,27 +4,23 @@ a python framework for testing command line interfaces
 
 ## Prerequisites
 
-  1. Python 2.7
+  1. Python2.7/Python3
 
 ## Installation
 
-This is a python2.7 module, to run it/test it you need a python2.7 environment, the easiest way is to use the `virtualenv`:
-
-    virtualenv -p python2.7 p27
-    source p27/bin/activate
-    (p27)...
+This library works for python2.7 (still) as well as for Python3. 
 
 To install the module using `pip` run:
 
-    (p27) pip install https://github.com/realead/exetest/zipball/master
+    pip install https://github.com/realead/exetest/zipball/master
 
 It is possible to uninstall it afterwards via
    
-    (p27) pip uninstall exetest
+    pip uninstall exetest
 
 You can also install using the `setup.py` file from the root directory of the project:
 
-    (p27)  python setup.py install
+    python setup.py install
 
 However, there is no easy way to deinstall it afterwards (only manually) if `setup.py` was used directly.
 
@@ -39,7 +35,19 @@ or programmatically, for example with help of
 
 #### Tests
 
-Run `sh run_unit_tests.sh` with the virtual environment activated to run all unit tests.
+Use `sh run_unit_tests.sh` to setup a virtual environment, install the exetest-package, run unit-tests and delete everything:
+
+Depending whether you will use python2 or python3 run it with `p2` or `p3` (`p3` being default), e.g.:
+
+    sh run_unit_tests.sh p3
+
+To check the installation from github run (local project is default):
+
+    sh run_unit_tests.sh p3 from-github
+
+To keep the setup virtual invironment run with option `keep`:
+
+    sh run_unit_tests.sh p3 local keep
   
 ## Tutorial
 
@@ -331,12 +339,14 @@ As default, a test case is registered if both input and output file with the sam
 
    **0.3.0**: Input/Ouput/Error from files // Discovering test cases from a folder
 
+   **0.4.0**: Support for Python3 (only ascii)
+
 ## Future:
  
    1. maximal execution time for a test case
    2. an interface for test runner, so this framework can be used without unittest
    3. other test frameworks as possible targets
-   4. python3
+   4. Non-ascii support in Python3
 
 
                               
