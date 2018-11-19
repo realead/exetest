@@ -16,7 +16,7 @@ fi;
 
 
 if [ "$2" = "from-github" ]; then
-    pip install https://github.com/realead/cykhash/zipball/master
+    pip install https://github.com/realead/exetest/zipball/master
 else
     (python setup.py install)
 fi;
