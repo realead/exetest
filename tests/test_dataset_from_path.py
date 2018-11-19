@@ -19,7 +19,7 @@ class TestFromPathTester:
     default_parameters = {ex.OPTIONS: ["echoprog.py"],
                           ex.EXIT_CODE: 0}
     def test_count_tests(self):
-        self.assertEquals(count_test_cases(self.__class__), 3)
+        self.assertEqual(count_test_cases(self.__class__), 3)
 
 
 @dec.to_unit_tests
@@ -29,7 +29,7 @@ class TestFromPathWithNeededTester:
     default_parameters = {ex.OPTIONS: ["echoprog.py"],
                           ex.EXIT_CODE: 0}
     def test_count_tests(self):
-        self.assertEquals(count_test_cases(self.__class__), 4)
+        self.assertEqual(count_test_cases(self.__class__), 4)
 
 
 my_endings={ex.INPUT_FILE :  ".my_in",  
@@ -45,5 +45,5 @@ class TestFromPathWithEndingsTester:
                           ex.EXIT_CODE: 0}
 
     def test_count_tests(self):
-        self.assertEquals(count_test_cases(self.__class__), 2)
+        self.assertEqual(count_test_cases(self.__class__), 2)
 

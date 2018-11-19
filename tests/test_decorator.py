@@ -7,19 +7,19 @@ import exetest as ex
 class FindUnusedNameTester(unittest.TestCase):  
 
     def test_find_in_empty(self):
-        self.assertEquals(dec.find_unused_name("name", {}), "name")
+        self.assertEqual(dec.find_unused_name("name", {}), "name")
         
     def test_find_if_not_yet_in_the_set(self):
-        self.assertEquals(dec.find_unused_name("name", ["name_", "name ", "nname"]), "name")
+        self.assertEqual(dec.find_unused_name("name", ["name_", "name ", "nname"]), "name")
         
     def test_find_1(self):
-        self.assertEquals(dec.find_unused_name("name", ["name"]), "name1")
+        self.assertEqual(dec.find_unused_name("name", ["name"]), "name1")
         
     def test_find_2(self):
-        self.assertEquals(dec.find_unused_name("name", ["name", "name1"]), "name2")
+        self.assertEqual(dec.find_unused_name("name", ["name", "name1"]), "name2")
         
     def test_find_3(self):
-        self.assertEquals(dec.find_unused_name("name", ["name", "name1", "name2", "name33", "name4"]), "name3")
+        self.assertEqual(dec.find_unused_name("name", ["name", "name1", "name2", "name33", "name4"]), "name3")
 
 
 class ToUnitTestDecoratorTester(unittest.TestCase):
@@ -57,7 +57,7 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
         a=A();
         self.assertTrue(hasattr(a, "test_input1"))
         self.assertTrue(hasattr(a, "test_input11"))
-        self.assertEquals(a.test_input1(), 42) #old method
+        self.assertEqual(a.test_input1(), 42) #old method
         self.assertTrue(a.test_input11() is None) #new method, no throw
 
 
@@ -93,7 +93,7 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
 
         a=A();#no throw
     
-        self.assertEquals(len(A.__bases__), 1)
+        self.assertEqual(len(A.__bases__), 1)
         self.assertTrue(unittest.TestCase in A.__bases__)
 
 
@@ -105,7 +105,7 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
 
         a=A();#no throw
     
-        self.assertEquals(len(A.__bases__), 2)
+        self.assertEqual(len(A.__bases__), 2)
         self.assertTrue(unittest.TestCase in A.__bases__)
 
 
@@ -117,7 +117,7 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
                 pass
 
         a=A()#no throw
-        self.assertEquals(len(A.__bases__), 2)
+        self.assertEqual(len(A.__bases__), 2)
         self.assertTrue(unittest.TestCase in A.__bases__)
 
 
@@ -139,8 +139,8 @@ class ToUnitTestDecoratorTester(unittest.TestCase):
 
         a=A()#no throw
         b=B()#no throw
-        self.assertEquals(a.ret1(), 1)
-        self.assertEquals(b.ret2(), 2)
+        self.assertEqual(a.ret1(), 1)
+        self.assertEqual(b.ret2(), 2)
 
 ## using decorators:
 
@@ -217,11 +217,11 @@ class KeepOldFunctionalityTester:
 
     def test_SetUpExists(self):
         self.assertTrue(hasattr(self, "setUp"))
-        self.assertEquals(self.setUp(), 10)
+        self.assertEqual(self.setUp(), 10)
 
     def test_SetUpExists(self):
         self.assertTrue(hasattr(self, "tearDown")) 
-        self.assertEquals(self.tearDown(), 11)
+        self.assertEqual(self.tearDown(), 11)
 
 
   
