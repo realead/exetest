@@ -1,5 +1,5 @@
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT
+from exetest.parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT
 
 class CheckerError(Exception):
     def __init__(self, message):

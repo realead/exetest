@@ -1,7 +1,7 @@
 import inspect
 import unittest
 
-import executor as ex
+import exetest.executor as ex
 
 #finds a name not in dictionary:
 #checks for name, name1, name2, name3 and so on

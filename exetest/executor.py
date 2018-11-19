@@ -1,8 +1,8 @@
 import subprocess
 import itertools
 
-from parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS, PREPARERS, CLEANERS, INPUT_FILE, STDOUT_FILE, STDERR_FILE
-from checkers import DefaultChecker
+from exetest.parnames import OPTIONS, EXIT_CODE, STDOUT, STDERR, INPUT, CHECKERS, ADDITIONAL_CHECKERS, PREPARERS, CLEANERS, INPUT_FILE, STDOUT_FILE, STDERR_FILE
+from exetest.checkers import DefaultChecker
 
 
 def slurp_file(file_name):
@@ -17,9 +17,18 @@ class CallResult:
 
 
 def execute_process(command, command_input): 
-    df = subprocess.Popen(command,  stdin=subprocess.PIPE, stdout=subprocess.PIPE,  stderr=subprocess.PIPE)        
+    df = subprocess.Popen(command,  stdin=subprocess.PIPE, stdout=subprocess.PIPE,  stderr=subprocess.PIPE)
+    try:
+        command_input = command_input.encode('ascii')
+    except:
+        pass       
     output, err = df.communicate(input=command_input)
     code=df.returncode
+    try:
+         output = output.decode('ascii')
+         err = err.decode('ascii')
+    except:
+        pass
     return CallResult(output, err, code)
 
 
@@ -27,8 +36,8 @@ def execute_process(command, command_input):
 def check_and_fix_params(params, default_params):
     """ inserting default values if none given"""
     for key,val in default_params.items():
-		if key not in params:
-			params[key]=val
+        if key not in params:
+            params[key]=val
 
     if OPTIONS not in params:
         params[OPTIONS]=[]

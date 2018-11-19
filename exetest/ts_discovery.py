@@ -1,6 +1,6 @@
 import os
-from parnames import INPUT_FILE, STDOUT_FILE, STDERR_FILE
-import decorator as dec
+from exetest.parnames import INPUT_FILE, STDOUT_FILE, STDERR_FILE
+from exetest import decorator as dec
 
 DEFAULT_ENDINGS ={INPUT_FILE :  ".in", 
                   STDOUT_FILE : ".out", 
